@@ -1,0 +1,118 @@
+import processing.serial.*;
+Serial port;
+
+import processing.sound.*;
+SoundFile file;
+
+PImage sfondo;
+PImage vig;
+PImage omino;
+PImage car1;
+PImage car2;
+PImage boom;
+int posCar = 0;
+
+String s1 = "Vai capo, vai!";
+String s2 = "Vien, vien!";
+String s3 = "Buon, buon!";
+
+
+
+
+void setup(){
+  
+  size(1500,500);
+    
+  colorMode(HSB,255);
+  
+    // Load a soundfile from the /data folder of the sketch and play it back
+  file = new SoundFile(this, "boom.mp3");
+
+  sfondo = loadImage("sfondo.png");
+  vig = loadImage("vig.png");
+  omino = loadImage("omino.png");
+  car1 = loadImage("car1.png");
+  car2 = loadImage("car2.png");
+  boom = loadImage("boom.png");
+  
+  println("Available Serial Ports:");
+  println(Serial.list());
+  port = 
+    new Serial(this, Serial.list()[0],9600); //PORTA 0, PERCHE UNICA 
+    
+      /*   if(port.available() >0 ){
+        
+     if(posCar<3)
+      posCar = port.read();    
+       println(posCar);
+       background(255);
+       image(boom,250,50);
+       file.play();
+        
+    }
+    if(port.available() >0) {
+      posCar = port.read();
+      
+      if(posCar<3 ){
+       file.play();
+       }
+    }*/
+}
+
+
+void draw(){
+  if(port.available() >0 ){
+      posCar = port.read();
+      
+    if(posCar>30 ){
+       println(posCar);
+       background(sfondo);
+       image(omino, 657, 212);
+       image(vig, 752, 93); 
+       image(car1, 21, 217);
+       image(car2, 843, 217);
+       textSize(18);
+       textAlign(CENTER);
+       fill(50);
+       text(s1, 752, 140, 210, 150);  // Text wraps within text box
+    }
+    
+     else if(posCar>10) {
+       println(posCar);
+       background(sfondo);
+       image(omino, 657, 212);
+       image(vig, 752, 93); 
+       image(car1, 321-(posCar*10),217);
+       image(car2, 843, 217);
+       textSize(18);
+       textAlign(CENTER);
+       fill(50);
+       text(s2, 752, 140, 210, 150);  // Text wraps within text box
+    }
+     
+      else if(posCar>3) {
+       println(posCar);
+       background(sfondo);
+       image(omino, 657, 212);
+       image(vig, 752, 93); 
+       image(car1, 321-(posCar*10),217);
+       image(car2, 843, 217);
+       textSize(18);
+       textAlign(CENTER);
+       fill(50);
+       text(s3, 752, 140, 210, 150);  // Text wraps within text box
+    }
+    
+    else {
+       println(posCar);
+       background(sfondo);
+       image(omino, 657, 212);
+       image(vig, 752, 93); 
+       image(car1, 321, 217);
+       image(car2, 843, 217);
+       image(boom,568,45);
+       file.play();
+      
+    }        
+  }  
+}
